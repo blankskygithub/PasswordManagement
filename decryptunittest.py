@@ -16,7 +16,7 @@ class TestDecryptModule(unittest.TestCase):
         Test Row ColumnTransposition
         """
         ciphertext = "Tsrshaesistasemgicee"
-        key = [5, 4]
+        key = [4, 5]
         self.assertEqual('Thisisasecretmessage',
                          decrypt.row_column_transposition(ciphertext, key))
 

@@ -26,15 +26,15 @@ def row_column_transposition(ciphertext, key):
         plaintext="Thisisasecretmessage"
     """
     plaintext = ''
-    column = key[0]
     row = key[1]
+    column = key[0]
     if row * column != len(ciphertext):
         raise ce.EncryptKeyErrorException(
             "encrypt key error: num_row * num_column != ciphertext.__len__")
-    for i in xrange(0, row):
-        for j in xrange(0, column):
-            if (i + j * row) < len(ciphertext):
-                plaintext += ciphertext[i + j * row]
+    for i in xrange(0, column):
+        for j in xrange(0, row):
+            if (i + j * column) < len(ciphertext):
+                plaintext += ciphertext[i + j * column]
             else:
                 plaintext += ''
     return plaintext
