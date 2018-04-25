@@ -4,12 +4,13 @@
 # @Author  : Zhilin Shuai (zhilin_shuai@trendmicro.com.cn)
 # @Link    : http://www.example.com.cn/
 # @Version : $Id$
+import CustomException as ce
 
 
 def row_column_transposition(plaintext, key):
     """
     Description: row/column transposition cipher
-
+    Restriction: num_rows * num_columns = length of plaintext(without space)
     Arguments:
         plaintext: plain text
         key: [num_rows, num_columns]
@@ -26,10 +27,10 @@ def row_column_transposition(plaintext, key):
     plaintext = ''.join(plaintext.split())
     row = key[0]
     column = key[1]
+    if row * column != len(plaintext):
+        raise ce.EncryptKeyErrorException(
+            "encrypt key error: num_row * num_column != plaintext.__len__(without spaces)")
     for i in xrange(0, column):
         for j in xrange(0, row):
-            if (i + j * column) < len(plaintext):
-                ciphertext += plaintext[i + j * column]
-            else:
-                ciphertext += ""
+            ciphertext += plaintext[i + j * column]
     return ciphertext

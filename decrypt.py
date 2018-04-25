@@ -4,6 +4,7 @@
 # @Author  : Zhilin Shuai (zhilin_shuai@trendmicro.com.cn)
 # @Link    : http://www.example.com.cn/
 # @Version : $Id$
+import CustomException as ce
 
 
 def row_column_transposition(ciphertext, key):
@@ -27,6 +28,9 @@ def row_column_transposition(ciphertext, key):
     plaintext = ''
     column = key[0]
     row = key[1]
+    if row * column != len(ciphertext):
+        raise ce.EncryptKeyErrorException(
+            "encrypt key error: num_row * num_column != ciphertext.__len__")
     for i in xrange(0, row):
         for j in xrange(0, column):
             if (i + j * row) < len(ciphertext):
