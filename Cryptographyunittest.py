@@ -7,6 +7,7 @@
 
 import unittest
 import encrypt
+import decrypt
 
 
 class TestEncryptModule(unittest.TestCase):
@@ -26,6 +27,20 @@ class TestEncryptModule(unittest.TestCase):
         self.assertEqual('Tsrshaesistasemgicee', ciphertext)
 
 
+class TestDecryptModule(unittest.TestCase):
+
+    def testRowColumnTransposition(self):
+        """
+        Test Row ColumnTransposition
+        """
+        ciphertext = "Tsrshaesistasemgicee"
+        key = [4, 5]
+        self.assertEqual('Thisisasecretmessage',
+                         decrypt.row_column_transposition(ciphertext, key))
+
+
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestEncryptModule)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    encryptSuite = unittest.TestLoader().loadTestsFromTestCase(TestEncryptModule)
+    decryptSuite = unittest.TestLoader().loadTestsFromTestCase(TestDecryptModule)
+    unittest.TextTestRunner(verbosity=2).run(encryptSuite)
+    unittest.TextTestRunner(verbosity=2).run(decryptSuite)
