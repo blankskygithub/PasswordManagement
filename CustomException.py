@@ -18,7 +18,7 @@ class CustomException(Exception):
 
 
 class EncryptKeyErrorException(CustomException):
-    """docstring for KeyErrorException"""
+    """docstring for EncrytKeyErrorException"""
 
     def __init__(self, error_message):
         super(EncryptKeyErrorException, self).__init__(error_message)

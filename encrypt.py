@@ -22,6 +22,11 @@ def row_column_transposition(plaintext, key):
         r e t m e
         s s a g e
         ciphertext="Tsrshaesistasemgicee"
+    Expand:
+        Add other extra random characters after ciphertext
+        Don't need substring(ciphertext) in decryption because of key is fixed
+        But it doesn't matter if you substring(ciphertext): ciphertext[:num_rows*num_columns]
+        ciphertext="Tsrshaesistasemgicee[testrandomab]"
     """
     ciphertext = ""
     plaintext = ''.join(plaintext.split())
@@ -58,6 +63,10 @@ def column_transposition(plaintext, key):
         m r e e t
         g s s e a
         ciphertext="sthiiesacsmreetgssea"
+    Expand:
+        columns_position can be substituted by a string whose length equals
+        num_columns and regard the alphabetical order as columns_position
+        eg. BOATS ==> [2, 3, 1, 5, 4]
     """
     ciphertext = ""
     plaintext = ''.join(plaintext.split())
@@ -72,4 +81,33 @@ def column_transposition(plaintext, key):
         for j in xrange(0, num_columns):
             index = i * num_columns + columns_position.index(j + 1)
             ciphertext += plaintext[index]
+    return ciphertext
+
+
+def caesar_substitution(plaintext, key):
+    """
+    Description: CAESAR substitution,
+                 shift each character in the message by n(key) letters
+                 eg. when key=3, A to D, Z to C
+    Arguments:
+        plaintext: plain text
+        key: offset
+    Example:
+        plaintext="This is a secret message"
+        key=3
+        ciphertext="Wklvlvdvhfuhwphvvdjh"
+    """
+    ciphertext = ""
+    plaintext = ''.join(plaintext.split())
+    try:
+        key = int(key)
+    except Exception:
+        raise ce.EncryptKeyErrorException("Encrypt Key Error: key is not an integer")
+    offset = key % 26
+    for character in list(plaintext):
+        if (ord(character) < ord('z') + 1 and (ord(character) + offset > ord('z'))) \
+                or (ord(character) < ord('Z') + 1 and (ord(character) + offset > ord('Z'))):
+            ciphertext += chr(ord(character) + offset - 26)
+        else:
+            ciphertext += chr(ord(character) + offset)
     return ciphertext

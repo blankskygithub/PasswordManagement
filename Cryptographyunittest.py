@@ -40,6 +40,20 @@ class TestEncryptModule(unittest.TestCase):
             raise e
         self.assertEqual('sthiiesacsmreetgssea', ciphertext)
 
+    def testCaesarSubstitution(self):
+        """
+        Test CAESAR substitution
+        """
+        plaintext = "this is a secret meXYZge"
+        key = 3
+        ciphertext = ""
+        try:
+            ciphertext = encrypt.caesar_substitution(plaintext, key)
+        except Exception as e:
+            print(e.message)
+            raise e
+        self.assertEqual("wklvlvdvhfuhwphABCjh", ciphertext)
+
 
 class TestDecryptModule(unittest.TestCase):
 
@@ -47,7 +61,7 @@ class TestDecryptModule(unittest.TestCase):
         """
         Test Row/ColumnTransposition
         """
-        ciphertext = "Tsrshaesistasemgicee"
+        ciphertext = "Tsrshaesistasemgiceetestraandom"
         key = [4, 5]
         self.assertEqual('Thisisasecretmessage',
                          decrypt.row_column_transposition(ciphertext, key))
@@ -65,6 +79,17 @@ class TestDecryptModule(unittest.TestCase):
             print e.message
             raise e
         self.assertEqual('thisisasecretmessage', plaintext)
+
+    def testCaesarSubstitution(self):
+        ciphertext = "wklvlvdvhfuhwphABCjh"
+        key = 3
+        plaintext = ""
+        try:
+            plaintext = decrypt.caesar_substitution(ciphertext, key)
+        except Exception as e:
+            print e.message
+            raise e
+        self.assertEqual("thisisasecretmeXYZge", plaintext)
 
 
 if __name__ == '__main__':
