@@ -54,6 +54,20 @@ class TestEncryptModule(unittest.TestCase):
             raise e
         self.assertEqual("wklvlvdvhfuhwphABCjh", ciphertext)
 
+    def testVigenereSubstitution(self):
+        """
+        Test Vigenere substitution
+        """
+        plaintext = "this is a secret meXYZge"
+        key = [2, 4, 5, 7, 9]
+        ciphertext = ""
+        try:
+            ciphertext = encrypt.vigenere_substitution(plaintext, key)
+        except Exception as e:
+            print(e.message)
+            raise e
+        self.assertEqual("vlnzruexlltiytnZCEnn", ciphertext)
+
 
 class TestDecryptModule(unittest.TestCase):
 
@@ -88,6 +102,17 @@ class TestDecryptModule(unittest.TestCase):
             plaintext = decrypt.caesar_substitution(ciphertext, key)
         except Exception as e:
             print e.message
+            raise e
+        self.assertEqual("thisisasecretmeXYZge", plaintext)
+
+    def testVigenereSubstitution(self):
+        ciphertext = "vlnzruexlltiytnZCEnn"
+        key = [2, 4, 5, 7, 9]
+        plaintext = ""
+        try:
+            plaintext = decrypt.vigenere_substitution(ciphertext, key)
+        except Exception as e:
+            print(e.message)
             raise e
         self.assertEqual("thisisasecretmeXYZge", plaintext)
 
