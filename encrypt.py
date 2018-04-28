@@ -22,7 +22,7 @@ def row_column_transposition(plaintext, key):
         r e t m e
         s s a g e
         ciphertext="Tsrshaesistasemgicee"
-    Expand:
+    Expansion:
         Add other extra random characters after ciphertext
         Don't need substring(ciphertext) in decryption because of key is fixed
         But it doesn't matter if you substring(ciphertext): ciphertext[:num_rows*num_columns]
@@ -34,7 +34,7 @@ def row_column_transposition(plaintext, key):
     num_columns = key[1]
     if num_rows * num_columns != len(plaintext):
         raise ce.EncryptKeyErrorException(
-            "encrypt key error: num_rows * num_columns != plaintext.__len__(without spaces)")
+            "Encrypt Key Error: num_rows * num_columns != plaintext.__len__(without spaces)")
     for i in xrange(0, num_columns):
         for j in xrange(0, num_rows):
             ciphertext += plaintext[i + j * num_columns]
@@ -63,7 +63,7 @@ def column_transposition(plaintext, key):
         m r e e t
         g s s e a
         ciphertext="sthiiesacsmreetgssea"
-    Expand:
+    Expansion:
         columns_position can be substituted by a string whose length equals
         num_columns and regard the alphabetical order as columns_position
         eg. BOATS ==> [2, 3, 1, 5, 4]
@@ -75,7 +75,7 @@ def column_transposition(plaintext, key):
     columns_position = key[2]
     if (num_rows * num_columns != len(plaintext)) or (num_columns != len(columns_position)):
         raise ce.EncryptKeyErrorException(
-            "encrypt key error: num_rows * num_columns != plaintext.__len__(without spaces) \
+            "Encrypt Key Error: num_rows * num_columns != plaintext.__len__(without spaces) \
             OR num_columns != columns_position.__len__")
     for i in xrange(0, num_rows):
         for j in xrange(0, num_columns):
@@ -87,7 +87,7 @@ def column_transposition(plaintext, key):
 def caesar_substitution(plaintext, key):
     """
     Description: CAESAR substitution,
-                 shift each character in the message by n(key) letters
+                 shift each character in the plaintext by n(key) letters
                  eg. when key=3, A to D, Z to C
     Arguments:
         plaintext: plain text
@@ -105,6 +105,34 @@ def caesar_substitution(plaintext, key):
         raise ce.EncryptKeyErrorException("Encrypt Key Error: key is not an integer")
     offset = key % 26
     for character in list(plaintext):
+        if (ord(character) < ord('z') + 1 and (ord(character) + offset > ord('z'))) \
+                or (ord(character) < ord('Z') + 1 and (ord(character) + offset > ord('Z'))):
+            ciphertext += chr(ord(character) + offset - 26)
+        else:
+            ciphertext += chr(ord(character) + offset)
+    return ciphertext
+
+
+def vigenere_substitution(plaintext, key):
+    """
+    Description: VIGENERE substitution,
+                 each character in the plaintext is shifted by differernt key
+    Arguments:
+        plaintext: plaintext
+        key: [offsets]
+    Example:
+        plaintext="This is a secret message"
+        key=[2,4,5,7,9] or alphabetical list, a represents 0, b represents 1
+        2 4 5 7 9 2 4 5 7 9 2 4 5 7 9 2 4 5 7 9
+        T h i s i s a s e c r e t m e s s a g e
+        V l n z r u e x l l t i y t n u w f n n
+        ciphertext = "Vlnzruexlltiytnuwfnn"
+    """
+    ciphertext = ""
+    plaintext = ''.join(plaintext.split())
+    key_length = len(key)
+    for index, character in enumerate(list(plaintext)):
+        offset = key[index % key_length % 26]
         if (ord(character) < ord('z') + 1 and (ord(character) + offset > ord('z'))) \
                 or (ord(character) < ord('Z') + 1 and (ord(character) + offset > ord('Z'))):
             ciphertext += chr(ord(character) + offset - 26)

@@ -99,3 +99,29 @@ def caesar_substitution(ciphertext, key):
         else:
             plaintext += chr(ord(character) - offset)
     return plaintext
+
+
+def vigenere_substitution(ciphertext, key):
+    """
+    Description: Vigenere Substitution
+    Arguments:
+        ciphertext: cipher text
+        key: [offsets]
+    Example:
+        ciphertext = "Vlnzruexlltiytnuwfnn"
+        key=[2,4,5,7,9] or alphabetical list, a represents 0, b represents 1
+        2 4 5 7 9 2 4 5 7 9 2 4 5 7 9 2 4 5 7 9
+        V l n z r u e x l l t i y t n u w f n n
+        T h i s i s a s e c r e t m e s s a g e
+        plaintext="Thisisasecretmessage"
+    """
+    plaintext = ""
+    key_length = len(key)
+    for index, character in enumerate(list(ciphertext)):
+        offset = key[index % key_length % 26]
+        if (ord(character) > ord('A') - 1 and (ord(character) - offset < ord('A'))) \
+                or (ord(character) > ord('a') - 1 and (ord(character) - offset < ord('a'))):
+            plaintext += chr(ord(character) - offset + 26)
+        else:
+            plaintext += chr(ord(character) - offset)
+    return plaintext
